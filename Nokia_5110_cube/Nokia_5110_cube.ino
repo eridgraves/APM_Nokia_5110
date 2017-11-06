@@ -21,6 +21,9 @@ void setup()   {
   display.setContrast(100);
   // Clear the screen/buffer
   display.clearDisplay(); 
+  
+  pinMode(LED_BUILTIN, OUTPUT);
+  Serial.begin(9600);
 }
 
 // Define point-pair struct
@@ -42,26 +45,13 @@ pp bot = {42, 46, 42, 40};
 pp l = {23, 27, 23, 21};
 
 
-void loop(){
+int x = 1; // The animation offset variable
 
+void loop(){
+  Serial.print("\nIS THIS WORKING?\n");
   // Starting with each pair of points as corners of the cube
   // Starting cube position as a diamond (standing on edge)
 
-  display.writePixel(top.f_x,top.f_y,BLACK); // F_top
-  display.writePixel(top.b_x,top.b_y,BLACK); // B_top
-  
-  display.writePixel(r.f_x,r.f_y,BLACK); // F_R
-  display.writePixel(r.b_x,r.b_y,BLACK); // B_R
-   
-  display.writePixel(bot.f_x,bot.f_y,BLACK); // F_B
-  display.writePixel(bot.b_x,bot.b_y,BLACK); // B_B
-
-  display.writePixel(l.f_x,l.f_y,BLACK); // F_L
-  display.writePixel(l.b_x,l.b_y,BLACK); // B_L
-
-  display.display();
-  delay(500);
-  
   // Draw vertical connecting lines
   display.writeLine(top.f_x,top.f_y,top.b_x,top.b_y,BLACK);
   display.writeLine(bot.f_x,bot.f_y,bot.b_x,bot.b_y,BLACK);
@@ -78,6 +68,41 @@ void loop(){
   display.writeLine(r.b_x,r.b_y,bot.b_x,bot.b_y, BLACK);
   display.writeLine(bot.b_x,bot.b_y,l.b_x,l.b_y, BLACK);
   display.writeLine(l.b_x,l.b_y,top.b_x,top.b_y, BLACK);
+
+  display.display();
+
+
+  delay(20); // Processor speed = 8MHz 
+  
+  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  
+    // Draw diagonal connecting lines
+  display.writeLine(top.f_x,top.f_y,r.f_x,r.f_y, WHITE);
+  display.writeLine(r.f_x,r.f_y,bot.f_x,bot.f_y, WHITE);
+  display.writeLine(bot.f_x,bot.f_y,l.f_x,l.f_y, WHITE);
+  display.writeLine(l.f_x,l.f_y,top.f_x,top.f_y, WHITE);
+
+  display.writeLine(top.b_x,top.b_y,r.b_x,r.b_y, WHITE);
+  display.writeLine(r.b_x,r.b_y,bot.b_x,bot.b_y, WHITE);
+  display.writeLine(bot.b_x,bot.b_y,l.b_x,l.b_y, WHITE);
+  display.writeLine(l.b_x,l.b_y,top.b_x,top.b_y, WHITE);
+
+  display.writeLine(top.f_x,top.f_y,top.b_x,top.b_y,WHITE);
+  display.writeLine(bot.f_x,bot.f_y,bot.b_x,bot.b_y,WHITE);
+  display.writeLine(r.f_x,r.f_y,r.b_x,r.b_y,WHITE);
+  display.writeLine(l.f_x,l.f_y,l.b_x,l.b_y,WHITE);
+
+  delay(20);
+
+    // Moving the points of the cube
+  if(top.f_x == 84) x = -1;
+  if(top.f_x == 0) x = 1;
+  Serial.print(x, DEC);
+  top.f_x += x;
+  top.b_x += x;
+
+  bot.f_x -= x;
+  bot.b_x -= x;
   
 }
 
