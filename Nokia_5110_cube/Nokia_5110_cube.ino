@@ -69,14 +69,11 @@ void loop(){
   display.writeLine(bot.b_x,bot.b_y,l.b_x,l.b_y, BLACK);
   display.writeLine(l.b_x,l.b_y,top.b_x,top.b_y, BLACK);
 
-  display.display();
-
-
   delay(20); // Processor speed = 8MHz 
   
   digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
   
-    // Draw diagonal connecting lines
+    // Clear drawn lines
   display.writeLine(top.f_x,top.f_y,r.f_x,r.f_y, WHITE);
   display.writeLine(r.f_x,r.f_y,bot.f_x,bot.f_y, WHITE);
   display.writeLine(bot.f_x,bot.f_y,l.f_x,l.f_y, WHITE);
@@ -91,6 +88,8 @@ void loop(){
   display.writeLine(bot.f_x,bot.f_y,bot.b_x,bot.b_y,WHITE);
   display.writeLine(r.f_x,r.f_y,r.b_x,r.b_y,WHITE);
   display.writeLine(l.f_x,l.f_y,l.b_x,l.b_y,WHITE);
+
+  display.display();
 
   delay(20);
 
