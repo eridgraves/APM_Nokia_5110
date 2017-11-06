@@ -19,12 +19,12 @@ void setup()   {
 
   // Set contrast
   display.setContrast(100);
+  
   // Clear the screen/buffer
   display.clearDisplay(); 
   
-  Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT); // Enables pulse
-  //Serial.begin(9600); // enables debug output
+  Serial.begin(9600); // enables debug output
 }
 
 // Define point-pair struct
@@ -37,6 +37,7 @@ typedef struct{
   // Back 
   int b_x;
   int b_y;
+
 } pp;
 
 // Define starting points here:
@@ -45,9 +46,19 @@ pp r = {61, 27, 61, 21};
 pp bot = {42, 46, 42, 40};
 pp l = {23, 27, 23, 21};
 
+/*
+// Resets to original values
+  void reset(void){
+    Serial.print("The pp values have been reset!\n");
+    pp top = {42, 8, 42, 2};
+    pp r = {61, 27, 61, 21};
+    pp bot = {42, 46, 42, 40};
+    pp l = {23, 27, 23, 21};
+  }
+*/
 
-int x = 1; // The animation offset variable
-int x = 1; // The animation variable
+int x = 1; // The animation variable in x direction
+int y = 1; // in y direction
 
 void loop(){
  // Serial.print("\nIS THIS WORKING?\n"); // debug statement
@@ -71,9 +82,7 @@ void loop(){
   display.writeLine(bot.b_x,bot.b_y,l.b_x,l.b_y, BLACK);
   display.writeLine(l.b_x,l.b_y,top.b_x,top.b_y, BLACK);
 
-  delay(20); // Processor speed = 8MHz 
   display.display(); // why does this work here, but not befor previous blocks of code?
-
 
   delay(20); // delay for 20ms
   
@@ -95,20 +104,52 @@ void loop(){
   display.writeLine(r.f_x,r.f_y,r.b_x,r.b_y,WHITE);
   display.writeLine(l.f_x,l.f_y,l.b_x,l.b_y,WHITE);
 
-  display.display();
-
-  delay(20);
   delay(20); // total delay gives ~ 25 fps
 
-  // Moving the points of the cube
-  if(top.f_x == 84) x = -1;
-  if(top.f_x == 0) x = 1;
- // Serial.print(x, DEC); // debug statement
-  top.f_x += x;
-  top.b_x += x;
+  // Move the points of the cube
 
-  bot.f_x -= x;
-  bot.b_x -= x;
+  if(top.f_x == 23){
+   // y = 0;
+
+    top.f_y += y;
+    top.b_y += y;
+
+    bot.f_y -= y;
+    bot.b_y -= y;    
+    
+  }
+  else{
+    top.f_x -= x;
+    top.b_x -= x;
+
+    bot.f_x += x;
+    bot.b_x += x;
+
+  }
+
+  if(r.f_y == 8){
+    // x = 0;
+
+     r.f_x -= x;
+     r.b_x -= x;
+
+     l.f_x += x;
+     l.b_x += x;
+
+  }
+  else{
+    r.f_y -= y;
+    r.b_y -= y;
+
+    l.f_y += y;
+    l.b_y += y;
+  }
+
+  // Reset statement
+  if((r.f_x == 23) && (top.f_y == 8) ){
+      
+       
+  }
   
 }
 
