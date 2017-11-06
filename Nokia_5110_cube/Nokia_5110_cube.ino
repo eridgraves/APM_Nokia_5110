@@ -22,8 +22,8 @@ void setup()   {
   // Clear the screen/buffer
   display.clearDisplay(); 
   
-  pinMode(LED_BUILTIN, OUTPUT);
-  Serial.begin(9600);
+  pinMode(LED_BUILTIN, OUTPUT); // Enables pulse
+  //Serial.begin(9600); // enables debug output
 }
 
 // Define point-pair struct
@@ -44,11 +44,10 @@ pp r = {61, 27, 61, 21};
 pp bot = {42, 46, 42, 40};
 pp l = {23, 27, 23, 21};
 
-
-int x = 1; // The animation offset variable
+int x = 1; // The animation variable
 
 void loop(){
-  Serial.print("\nIS THIS WORKING?\n");
+ // Serial.print("\nIS THIS WORKING?\n"); // debug statement
   // Starting with each pair of points as corners of the cube
   // Starting cube position as a diamond (standing on edge)
 
@@ -69,12 +68,12 @@ void loop(){
   display.writeLine(bot.b_x,bot.b_y,l.b_x,l.b_y, BLACK);
   display.writeLine(l.b_x,l.b_y,top.b_x,top.b_y, BLACK);
 
-  display.display();
+  display.display(); // why does this work here, but not befor previous blocks of code?
 
 
-  delay(20); // Processor speed = 8MHz 
+  delay(20); // delay for 20ms
   
-  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN)); // Toggle "pulse"
   
     // Draw diagonal connecting lines
   display.writeLine(top.f_x,top.f_y,r.f_x,r.f_y, WHITE);
@@ -92,12 +91,12 @@ void loop(){
   display.writeLine(r.f_x,r.f_y,r.b_x,r.b_y,WHITE);
   display.writeLine(l.f_x,l.f_y,l.b_x,l.b_y,WHITE);
 
-  delay(20);
+  delay(20); // total delay gives ~ 25 fps
 
-    // Moving the points of the cube
+  // Moving the points of the cube
   if(top.f_x == 84) x = -1;
   if(top.f_x == 0) x = 1;
-  Serial.print(x, DEC);
+ // Serial.print(x, DEC); // debug statement
   top.f_x += x;
   top.b_x += x;
 
